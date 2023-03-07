@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
 from db import get_db
 from models import Recipe
-from utils import create_recipe, get_recipe, get_recipes
+from utils import create_recipe, get_recipe, get_recipes, delete_recipe
 from schemas import RecipeSerializer
 from typing import List
 from sqlalchemy.orm import Session
@@ -34,7 +34,4 @@ def delete_recipe(
     recipe_id: int,
     db: Session = Depends(get_db)
 ):
-    db_obj=db.query(Recipe).where(id==recipe_id).first()
-    db.delete(db_obj)
-    db.commit()
-    return {'message':'Recipe deleted'}
+    return delete_recipe(db, recipe_id)
