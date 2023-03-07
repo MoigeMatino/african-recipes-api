@@ -9,3 +9,7 @@ def create_recipe(db: Session,recipe: RecipeSerializer):
     db.refresh(db_obj)
 
     return db_obj
+
+def get_recipe(db: Session, recipe_id:int):
+    recipe = db.query(Recipe).where(id==recipe_id).first()
+    return recipe
