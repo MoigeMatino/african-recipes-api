@@ -9,6 +9,7 @@ from fastapi import FastAPI, Depends
 from db import get_db
 from models import Recipe
 from schemas import RecipeSerializer
+from typing import List
 from sqlalchemy.orm import Session
 
 app=FastAPI()
@@ -24,3 +25,11 @@ def create_recipe(
     db.refresh(db_obj)
 
     return db_obj
+
+@app.get('/recipes', response_model=List[RecipeSerializer])
+def get_recipes(
+    db: Session = Depends(get_db),
+):
+    recipes = db.query(Recipe).all()
+    return recipes
+
