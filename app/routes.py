@@ -1,10 +1,3 @@
-"""
-POST-create recipe
-GET-get all recipes
-GET {id}-get one recipe
-DEL{id}-delete recipe
-PATCH{id}-update recipe
-"""
 from fastapi import FastAPI, Depends
 from db import get_db
 from models import Recipe
