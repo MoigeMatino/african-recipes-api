@@ -33,3 +33,10 @@ def get_recipes(
     recipes = db.query(Recipe).all()
     return recipes
 
+@app.get('/recipe/{recipe_id}', response_model=RecipeSerializer)
+def get_recipe(
+    recipe_id: str,
+    db: Session = Depends(get_db),
+):
+    recipe=db.query(Recipe).where(id==recipe_id).first()
+    return recipe
