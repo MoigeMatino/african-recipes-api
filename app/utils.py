@@ -13,3 +13,7 @@ def create_recipe(db: Session,recipe: RecipeSerializer):
 def get_recipe(db: Session, recipe_id:int):
     recipe = db.query(Recipe).where(id==recipe_id).first()
     return recipe
+
+def get_recipes(db: Session):
+    recipes = db.query(Recipe).all()
+    return recipes
