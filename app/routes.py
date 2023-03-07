@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
 from db import get_db
 from models import Recipe
-from utils import create_recipe
+from utils import create_recipe, get_recipe
 from schemas import RecipeSerializer
 from typing import List
 from sqlalchemy.orm import Session
@@ -28,8 +28,7 @@ def get_recipe(
     recipe_id: int,
     db: Session = Depends(get_db),
 ):
-    recipe=db.query(Recipe).where(id==recipe_id).first()
-    return recipe
+    return get_recipe(db, recipe_id)
 
 @app.delete('/recipe/{recipe_id}')
 def delete_recipe(
