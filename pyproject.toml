@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "recipes-api"
+version = "0.1.0"
+description = ""
+authors = ["Agatha Bahati <agatha@marketforce.com>"]
+readme = "README.md"
+packages = [{include = "recipes_api"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.92.0"
+uvicorn = "^0.20.0"
+SQLAlchemy = "^2.0.5.post1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
