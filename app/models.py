@@ -10,6 +10,7 @@ Base = declarative_base()
 class Recipe(Base):
     __tablename__='recipes'
 
+    id=mapped_column(Integer, index=True, primary_key=True)
     title=mapped_column(String, index=True, nullable=False)
     serving=mapped_column(Integer)
     ingredients:List[str]=mapped_column(str, nullable=False)
