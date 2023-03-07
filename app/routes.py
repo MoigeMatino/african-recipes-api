@@ -1,3 +1,10 @@
+"""
+POST-create recipe
+GET-get all recipes
+GET {id}-get one recipe
+DEL{id}-delete recipe
+PATCH{id}-update recipe
+"""
 from fastapi import FastAPI, Depends
 from db import get_db
 from models import Recipe
@@ -13,21 +20,27 @@ def create_recipe(
     recipe: Recipe,
     db: Session=Depends(get_db),
 ):
-    recipe = create_recipe(db,recipe)
-    return recipe
+    db_obj=Recipe(**recipe.dict())
+    db.add(db_obj)
+    db.commit()
+    db.refresh(db_obj)
+
+    return db_obj
 
 @app.get('/recipes', response_model=List[RecipeSerializer])
 def get_recipes(
     db: Session = Depends(get_db),
 ):
-    return get_recipes(db)
+    recipes = db.query(Recipe).all()
+    return recipes
 
 @app.get('/recipe/{recipe_id}', response_model=RecipeSerializer)
 def get_recipe(
     recipe_id: int,
     db: Session = Depends(get_db),
 ):
-    return get_recipe(db, recipe_id)
+    recipe=db.query(Recipe).where(id==recipe_id).first()
+    return recipe
 
 @app.delete('/recipe/{recipe_id}')
 def delete_recipe(
