@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
 from db import get_db
 from models import Recipe
-from utils import create_recipe, get_recipe
+from utils import create_recipe, get_recipe, get_recipes
 from schemas import RecipeSerializer
 from typing import List
 from sqlalchemy.orm import Session
@@ -20,8 +20,7 @@ def create_recipe(
 def get_recipes(
     db: Session = Depends(get_db),
 ):
-    recipes = db.query(Recipe).all()
-    return recipes
+    return get_recipes(db)
 
 @app.get('/recipe/{recipe_id}', response_model=RecipeSerializer)
 def get_recipe(
