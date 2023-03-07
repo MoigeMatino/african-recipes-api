@@ -1,5 +1,4 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker, Session, mapped_column
+from sqlalchemy.orm import declarative_base, mapped_column
 from sqlalchemy import String, Integer
 from typing import List
 from db import engine
