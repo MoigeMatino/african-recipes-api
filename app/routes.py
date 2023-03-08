@@ -13,11 +13,7 @@ def create_recipe(
     recipe: Recipe,
     db: Session=Depends(get_db),
 ):
-    db_obj=Recipe(**recipe.dict())
-    db.add(db_obj)
-    db.commit()
-    db.refresh(db_obj)
-
+    db_obj=create_recipe(db,recipe)
     return db_obj
 
 @app.get('/recipes', response_model=List[RecipeSerializer])
