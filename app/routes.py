@@ -20,8 +20,7 @@ def create_recipe(
 def get_recipes(
     db: Session = Depends(get_db),
 ):
-    recipes = db.query(Recipe).all()
-    return recipes
+    return get_recipes(db)
 
 @app.get('/recipe/{recipe_id}', response_model=RecipeSerializer)
 def get_recipe(
