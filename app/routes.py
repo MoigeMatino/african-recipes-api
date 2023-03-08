@@ -27,8 +27,7 @@ def get_recipe(
     recipe_id: int,
     db: Session = Depends(get_db),
 ):
-    recipe=db.query(Recipe).where(id==recipe_id).first()
-    return recipe
+    return get_recipe(db, recipe_id)
 
 @app.delete('/recipe/{recipe_id}')
 def delete_recipe(
