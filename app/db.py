@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from config import settings
 
-db_uri='sqlite+pysqlite:///./db.sqlite3:'
-engine=create_engine(db_uri, future=True, echo=True)
+DATABASE_URL = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOSTNAME}:{settings.DATABASE_PORT}/{settings.POSTGRES_DB}"
+engine=create_engine(DATABASE_URL, future=True, echo=True)
 SessionLocal=sessionmaker(autocommit=False, autoflush=False,bind=engine)
 
 def get_db() -> None:
