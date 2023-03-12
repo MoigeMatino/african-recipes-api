@@ -3,7 +3,7 @@ from db import get_db
 from models import Recipe
 from utils import create_recipe, get_recipe, get_recipes, delete_recipe
 from schemas import RecipeSerializer, RecipeCreateSerializer
-from typing import List, Any
+from typing import List, Any, Dict
 from sqlalchemy.orm import Session
 
 app=FastAPI()
@@ -33,5 +33,5 @@ def read_recipe(
 def delete_recipe(
     recipe_id: int,
     db: Session = Depends(get_db)
-) -> Any:
+) -> Dict:
     return delete_recipe(db, recipe_id)
