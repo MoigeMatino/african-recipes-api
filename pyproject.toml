@@ -13,6 +13,7 @@ uvicorn = "^0.20.0"
 SQLAlchemy = "^2.0.5.post1"
 psycopg2 = "^2.9.5"
 python-dotenv = "^1.0.0"
+alembic = "^1.10.2"
 
 
 [build-system]

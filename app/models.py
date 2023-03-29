@@ -1,9 +1,8 @@
 import uuid
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.dialects.postgresql import UUID, ARRAY
-from sqlalchemy import String, Integer, Column
+from sqlalchemy import String, Integer, Column, Float
 from typing import List
-from db import engine
 
 Base = declarative_base()
 class Recipe(Base):
@@ -23,5 +22,6 @@ class Recipe(Base):
     serving = Column(Integer)
     ingredients = Column(ARRAY(String), nullable=False)
     instructions = Column(String, nullable=False)
+    calories = Column(Float, default=0.0)
 
     # Base.metadata.create_all(bind=engine)

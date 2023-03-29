@@ -6,8 +6,19 @@ services:
     ports:
       - 6500:5432
     restart: always
+    environment:
+      - PGUSER=$POSTGRES_USER
+      - PGHOST=$POSTGRES_HOSTNAME
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - postgres-db:/var/lib/postgresql/data
+    
 
   api:
     build: .
@@ -18,11 +29,11 @@ services:
     env_file:
       - .env
     depends_on:
-      - postgresql
-
+      postgresql:
+        condition: service_healthy
   
 volumes:
-  postgres-db: {}
+  postgres-db: 
 
 
 
