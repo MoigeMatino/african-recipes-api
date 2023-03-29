@@ -1,39 +1,62 @@
 version: '3'
 services:
-  postgresql:
-    image: postgres
-    container_name: postgres
-    ports:
-      - 6500:5432
-    restart: always
-    environment:
-      - PGUSER=$POSTGRES_USER
-      - PGHOST=$POSTGRES_HOSTNAME
-    env_file:
-      - .env
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - postgres-db:/var/lib/postgresql/data
-    
+    pgsql:
+        image: 'postgres:${POSTGRES_VERSION:-15}'
+        ports:
+            - '${POSTGRES_PORT:-5432}:5432'
+        environment:
+            PGHOST: '{POSTGRES_HOSTNAME:-localhost}' # Todo: Understand this
+            PGPASSWORD: '${POSTGRES_PASSWORD:-secret}'
+            POSTGRES_DB: '${POSTGRES_DB}'
+            POSTGRES_USER: '${POSTGRES_USER}'
+            POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:-secret}'
+#        env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
+#            - .env
+        restart: always
+        volumes:
+            - 'postgres-db:/var/lib/postgresql/data'
+            - './tests/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql' # https://stackoverflow.com/questions/26598738/how-to-create-user-database-in-script-for-docker-postgres
+        networks:
+            - recipies-network
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
+            retries: 3
+            timeout: 5s
+            interval: 10s
 
-  api:
-    build: .
-    volumes:
-      - .:/src
-    ports:
-      - 4002:4002
-    env_file:
-      - .env
-    depends_on:
-      postgresql:
-        condition: service_healthy
-  
+    redis:
+        image: 'redis:alpine'
+        ports:
+            - '${REDIS_PORT:-6379}:6379'
+        volumes:
+            - 'redis-cache:/data'
+        networks:
+            - recipies-network
+        healthcheck:
+            test: [ "CMD", "redis-cli", "ping" ]
+            retries: 3
+            timeout: 5s
+
+    api:
+        build: .
+        volumes:
+            - .:/src
+        ports:
+            - 4002:4002
+#        env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
+#            - .env
+        depends_on:
+            - pgsql
+            - redis
+        networks:
+            - recipies-network
+
+networks: # https://www.simplilearn.com/tutorials/docker-tutorial/docker-networking#:~:text=Docker%20networking%20enables%20a%20user,to%20more%20than%20one%20network.
+    recipies-network:
+        driver: bridge
+
 volumes:
-  postgres-db: 
-
-
-
+    postgres-db:
+        driver: local
+    redis-cache:
+        driver: local
