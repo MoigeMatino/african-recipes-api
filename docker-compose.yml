@@ -5,13 +5,13 @@ services:
         ports:
             - '${POSTGRES_PORT:-5432}:5432'
         environment:
-            PGHOST: '{POSTGRES_HOSTNAME:-localhost}' # Todo: Understand this
+            PGHOST: '${POSTGRES_HOST:-localhost}' # Todo: Understand this
             PGPASSWORD: '${POSTGRES_PASSWORD:-secret}'
             POSTGRES_DB: '${POSTGRES_DB}'
             POSTGRES_USER: '${POSTGRES_USER}'
             POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:-secret}'
-#        env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
-#            - .env
+        env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
+            - .env
         restart: always
         volumes:
             - 'postgres-db:/var/lib/postgresql/data'
