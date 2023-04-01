@@ -12,8 +12,6 @@ COPY pyproject.toml poetry.lock /api/
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-root --no-interaction
 
-COPY .env .
-
 COPY ./app /api/app
 
 CMD ["uvicorn", "routes:app", "--host", "0.0.0.0", "--port", "4002"]

@@ -1,17 +1,18 @@
 version: '3'
 services:
-    pgsql:
-        image: 'postgres:${POSTGRES_VERSION:-15}'
+    postgres:
+        image: postgres:15
         ports:
-            - '${POSTGRES_PORT:-5432}:5432'
+            - 6005:5432
+        env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
+            - .env
         environment:
-            PGHOST: '${POSTGRES_HOST:-localhost}' # Todo: Understand this
+            PGHOST: '${POSTGRES_HOST:-localhost}' # ?To understand why: https://stackoverflow.com/questions/72942519/alembic-migration-with-fastapi-docker-connection-to-port-5432-in-localhost-fa
             PGPASSWORD: '${POSTGRES_PASSWORD:-secret}'
             POSTGRES_DB: '${POSTGRES_DB}'
             POSTGRES_USER: '${POSTGRES_USER}'
             POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:-secret}'
-        env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
-            - .env
+        
         restart: always
         volumes:
             - 'postgres-db:/var/lib/postgresql/data'
@@ -43,10 +44,10 @@ services:
             - .:/src
         ports:
             - 4002:4002
-#        env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
-#            - .env
+        env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
+            - .env
         depends_on:
-            - pgsql
+            - postgres
             - redis
         networks:
             - recipies-network
