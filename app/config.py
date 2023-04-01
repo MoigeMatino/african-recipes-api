@@ -14,6 +14,7 @@ class BaseConfig(BaseSettings):
     POSTGRES_USER: str = os.getenv("POSTGRES_USER")
     POSTGRES_DB: str = os.getenv("POSTGRES_DB")
     POSTGRES_HOST: str = os.getenv("POSTGRES_HOST")
+    POSTGRES_HOSTNAME: str = os.getenv("POSTGRES_HOSTNAME")
 
 class DevelopmentConfig(BaseConfig):
     debug: bool = True
@@ -27,14 +28,15 @@ class ProductionConfig(BaseConfig):
     POSTGRES_USER: str = os.getenv("PROD_POSTGRES_USER")
     POSTGRES_DB: str = os.getenv("PROD_POSTGRES_DB")
     POSTGRES_HOST: str = os.getenv("PROD_POSTGRES_HOST")
+    POSTGRES_HOSTNAME: str = os.getenv("POSTGRES_HOSTNAME")
 
 # Use the appropriate configuration class based on the current environment
 
 env: str = os.getenv('ENV')
 
 if env == "production" or env == 'prod':
-    config = ProductionConfig()
+    settings = ProductionConfig()
 elif env == "testing":
-    config = TestingConfig()
+    settings = TestingConfig()
 else:
-    config = DevelopmentConfig()
+    settings = DevelopmentConfig()
