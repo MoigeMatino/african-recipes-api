@@ -1,5 +1,19 @@
 version: '3'
 services:
+    api:
+        build: .
+        volumes:
+            - .:/src
+        ports:
+            - 4002:4002
+        env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
+            - .env
+        depends_on:
+            - postgres
+            - redis
+        networks:
+            - recipies-network
+
     postgres:
         image: postgres:15
         ports:
@@ -25,6 +39,20 @@ services:
             timeout: 5s
             interval: 10s
 
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: 'recipes-api.pgadmin'
+        restart: always
+        environment: # IMPORTANT! Use <host.docker.internal> as the host name when creating the server in pgadmin
+            PGADMIN_DEFAULT_EMAIL: '${PG_ADMIN_EMAIL:-admin@admin.com}'
+            PGADMIN_DEFAULT_PASSWORD: '${PG_ADMIN_PASSWORD:-root}'
+        ports:
+            - "${PGADMIN_PORT:-5050}:80"
+        depends_on:
+            - postgres
+        networks:
+            - recipies-network
+
     redis:
         image: 'redis:alpine'
         ports:
@@ -37,20 +65,6 @@ services:
             test: [ "CMD", "redis-cli", "ping" ]
             retries: 3
             timeout: 5s
-
-    api:
-        build: .
-        volumes:
-            - .:/src
-        ports:
-            - 4002:4002
-        env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
-            - .env
-        depends_on:
-            - postgres
-            - redis
-        networks:
-            - recipies-network
 
 networks: # https://www.simplilearn.com/tutorials/docker-tutorial/docker-networking#:~:text=Docker%20networking%20enables%20a%20user,to%20more%20than%20one%20network.
     recipies-network:
