@@ -23,5 +23,8 @@ class Recipe(Base):
     ingredients = Column(ARRAY(String), nullable=False)
     instructions = Column(String, nullable=False)
     calories = Column(Float, default=0.0)
+    image_file_path = Column(String, nullable=True)
+    #history
 
-    # Base.metadata.create_all(bind=engine)
+
+    
