@@ -30,6 +30,8 @@ To install and run the African Recipes API on your local machine, follow these s
 2. Install Docker and Docker Compose if you haven't already.
 3. From the project root directory, run: `docker-compose up`.
 4. The API will be available at `http://0.0.0.0:4002/docs`.
+5. Don't forget to migrate tables by running `alembic upgrade head
+   ` at the root of the directory
 
 ## Performance Considerations
 
