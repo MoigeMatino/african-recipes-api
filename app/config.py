@@ -28,7 +28,7 @@ class ProductionConfig(BaseConfig):
     POSTGRES_USER: str = os.getenv("PROD_POSTGRES_USER")
     POSTGRES_DB: str = os.getenv("PROD_POSTGRES_DB")
     POSTGRES_HOST: str = os.getenv("PROD_POSTGRES_HOST")
-    POSTGRES_HOSTNAME: str = os.getenv("POSTGRES_HOSTNAME")
+    POSTGRES_HOSTNAME: str = os.getenv("PROD_POSTGRES_HOSTNAME")
 
 # Use the appropriate configuration class based on the current environment
 
