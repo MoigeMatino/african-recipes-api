@@ -2,8 +2,9 @@ version: '3'
 services:
     api:
         build: .
+        container_name: 'recipes-api'
         volumes:
-            - .:/src
+            - .:/api
         ports:
             - 4002:4002
         env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
@@ -16,6 +17,7 @@ services:
 
     postgres:
         image: postgres:15
+        container_name: 'recipes-api.postgres'
         ports:
             - 6005:5432
         env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
@@ -52,9 +54,12 @@ services:
             - postgres
         networks:
             - recipies-network
+        volumes:
+            -   'pg-admin:/var/lib/pgadmin'
 
     redis:
         image: 'redis:alpine'
+        container_name: 'recipes-api.redis'
         ports:
             - '${REDIS_PORT:-6379}:6379'
         volumes:
@@ -74,4 +79,6 @@ volumes:
     postgres-db:
         driver: local
     redis-cache:
+        driver: local
+    pg-admin:
         driver: local
