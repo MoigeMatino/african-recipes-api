@@ -1,6 +1,6 @@
 from typing import List
-import uuid
-from constansts import Role
+
+from constants import Role
 from datetime import datetime
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID, ARRAY
@@ -54,10 +54,10 @@ class Recipe_Tags(Base):
     __tablename__ = "recipe_tags"
 
     recipe_id = mapped_column(String, ForeignKey("recipes.id"), primary_key=True)
-    tag_id = mapped_column(String, ForeignKey("tags.id", p)rimary_key=True)
+    tag_id = mapped_column(String, ForeignKey("tags.id"), primary_key=True)
 
-    tags = Mapped["Tag"] = relationship(back_populates="recipes")
-    recipes = Mapped["Recipe"] = relationship(back_populates="tags")
+    tags : Mapped["Tag"] = relationship(back_populates="recipes")
+    recipes : Mapped["Recipe"] = relationship(back_populates="tags")
 
 class Ingredients(Base):
     __tablename__ = "ingredients"

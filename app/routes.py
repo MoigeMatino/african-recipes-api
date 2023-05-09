@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends
-from app.db.db import get_db
+from db.db import get_db
 from models import Recipe
 from utils import create_recipe, get_recipe, get_recipes, delete_recipe
 from schemas import RecipeSerializer, RecipeCreateSerializer
