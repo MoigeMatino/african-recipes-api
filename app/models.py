@@ -1,150 +1,108 @@
+from typing import List
 import uuid
+from constansts import Role
 from datetime import datetime
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID, ARRAY
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, DateTime, Text
+from db.base_class import Base, generate_fake_email
 
-Base = declarative_base()
 
-class Recipe(Base):
-    __tablename__ = 'recipes'
-
-    id = Column(
-        UUID(as_uuid=True),
-        primary_key=True,
-        default=uuid.uuid4,
-        index=True
-    )
-    title = Column(
-        String(length=255),
-        nullable=False,
-        index=True
-    )
-    serving = Column(Integer)
-    ingredients = Column(ARRAY(String), nullable=False)
-    instructions = Column(String, nullable=False)
-    calories = Column(Float, default=0.0)
-    image_file_path = Column(String, nullable=True)
-    #history
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = "user"
 
-    id = Column(
-        UUID(as_uuid=True),
-        primary_key=True,
-        default=uuid.uuid4,
-        index=True
+    first_name : Mapped[str] = mapped_column(String, nullable=False)
+    last_name : Mapped[str] = mapped_column(String, nullable=False)
+    username : Mapped[str] = mapped_column(String, unique=True)
+    email = mapped_column(String, unique=True, index=True, default=generate_fake_email, nullable=True
     )
-    username = Column(String, nullable=False)
-    email = Column(String, nullable=False, unique=True)
-    password = Column(String, nullable=False)
+    password_hash = mapped_column(String, nullable=False)
+    role = mapped_column(String, nullable=False, default=Role.USER.value,
+        server_default=Role.USER.value
+    )
+    recipes: Mapped[List["Recipe"]] = relationship(back_populates="user")
+    comments: Mapped[List["Comment"]] = relationship(back_populates="user")
+    rating: Mapped[List["Rating"]] = relationship(back_populates="user")
 
-    recipes = relationship("Recipe", back_populates="user")
 
 class Recipe(Base):
-    __tablename__ = 'recipes'
+    __tablename__ = "recipes"
 
-    id = Column(
-        UUID(as_uuid=True),
-        primary_key=True,
-        default=uuid.uuid4,
-        index=True
-    )
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    title = Column(String, nullable=False)
-    description = Column(String, nullable=False)
-    instructions = Column(String, nullable=False)
-    prep_time = Column(Integer, nullable=False)
-    cook_time = Column(Integer, nullable=False)
-    total_time = Column(Integer, nullable=False)
-    servings = Column(Integer, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    title: Mapped[str] = mapped_column(String, nullable=False, index=True)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    instructions = mapped_column(Text, nullable=False)
+    prep_time: Mapped[int] = mapped_column(Integer)
+    cooking_time: Mapped[int] = mapped_column(Integer)
+    servings: Mapped[int] = mapped_column(Integer)
+    image_url: Mapped[str] = mapped_column(String, nullable=False)
 
-    user = relationship("User", back_populates="recipes")
-    recipe_tags = relationship("RecipeTag", back_populates="recipe")
-    nutritional_info = relationship("NutritionalInfo", back_populates="recipe")
-    recipe_ingredients = relationship("RecipeIngredient", back_populates="recipe")
-    ratings = relationship("Rating", back_populates="recipe")
-    comments = relationship("Comment", back_populates="recipe")
-
-class RecipeTag(Base):
-    __tablename__ = 'recipe_tags'
-
-    id = Column(
-        UUID(as_uuid=True),
-        primary_key=True,
-        default=uuid.uuid4,
-        index=True
-    )
-    recipe_id = Column(Integer, ForeignKey('recipes.id'), nullable=False)
-    tag_id = Column(Integer, ForeignKey('tags.id'), nullable=False)
-
-    recipe = relationship("Recipe", back_populates="recipe_tags")
-    tag = relationship("Tag", back_populates="recipe_tags")
-
-class NutritionalInfo(Base):
-    __tablename__ = 'nutritional_info'
-
-    id = Column(
-        UUID(as_uuid=True),
-        primary_key=True,
-        default=uuid.uuid4,
-        index=True
-    )
-    recipe_id = Column(Integer, ForeignKey('recipes.id'), nullable=False)
-    calories = Column(Float, nullable=False)
-    fat = Column(Float, nullable=False)
-    carbohydrates = Column(Float, nullable=False)
-    protein = Column(Float, nullable=False)
-    fiber = Column(Float, nullable=False)
-    sugar = Column(Float, nullable=False)
-    sodium = Column(Float, nullable=False)
-
-    recipe = relationship("Recipe", back_populates="nutritional_info")
-
-class RecipeIngredient(Base):
-    __tablename__ = 'recipe_ingredients'
-
-    id = Column(
-        UUID(as_uuid=True),
-        primary_key=True,
-        default=uuid.uuid4,
-        index=True
-    )
-    recipe_id = Column(Integer, ForeignKey('recipes.id'), nullable=False)
-    ingredient_id = Column(Integer, ForeignKey('ingredients.id'), nullable=False)
-    quantity = Column(String, nullable=False)
-
-    recipe = relationship("Recipe", back_populates="recipe_ingredients")
-    ingredient = relationship("Ingredient", back_populates="recipe_ingredients")
-
-class Ingredient(Base):
-    __tablename__ = 'ingredients'
-
-    id = Column(
-        UUID(as_uuid=True),
-        primary_key=True,
-        default=uuid.uuid4,
-        index=True
-    )
-    name = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    recipe_ingredients = relationship("RecipeIngredient", back_populates="ingredient")
+    user_id = mapped_column(String, ForeignKey("user.id"), nullable=False)
+    user : Mapped["User"] = relationship("User", back_populates="recipes")
+    tags: Mapped[List["Recipe_Tags"]] = relationship(back_populates="recipes")
+    ingredients: Mapped[List["Recipe_Ingredients"]] = relationship(back_populates="recipes")
+    comments: Mapped[List["Comment"]] = relationship(back_populates="recipe")
+    rating: Mapped["Rating"] = relationship(back_populates="recipe")
+    nutritional_info = relationship("Nutritional_Info", uselist=False, back_populates="recipe")
 
 class Tag(Base):
-    __tablename__ = 'tags'
+    __tablename__ = "tags"
 
-    id = Column(
-        UUID(as_uuid=True),
-        primary_key=True,
-        default=uuid.uuid4,
-        index=True
-    )
-    name = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    name: Mapped[str] = mapped_column(String, nullable=False, index=True)
+    recipes: Mapped[List["Recipe_Tags"]] = relationship("Recipe", back_populates="tags")
 
-    
+class Recipe_Tags(Base):
+    __tablename__ = "recipe_tags"
+
+    recipe_id = mapped_column(String, ForeignKey("recipes.id"), primary_key=True)
+    tag_id = mapped_column(String, ForeignKey("tags.id", p)rimary_key=True)
+
+    tags = Mapped["Tag"] = relationship(back_populates="recipes")
+    recipes = Mapped["Recipe"] = relationship(back_populates="tags")
+
+class Ingredients(Base):
+    __tablename__ = "ingredients"
+
+    name: Mapped[str] = mapped_column(String, nullable=False, index=True)
+    image_url: Mapped[str] = mapped_column(String, nullable=False)
+
+    recipes: Mapped["Recipe_Ingredients"] = relationship(back_populates="ingredients")
+
+class Recipe_Ingredients(Base):
+    __tablename__ = "recipe_ingredients"
+
+    recipe_id = mapped_column(String, ForeignKey("recipes.id"), primary_key=True)
+    ingredient_id = mapped_column(String, ForeignKey("ingredients.id"), primary_key=True)
+
+    ingredients: Mapped["Ingredients"] = relationship(back_populates="recipes")
+    recipes: Mapped["Recipe"] = relationship(back_populates="ingredients")
+
+class Comment(Base):
+    __tablename__ = "comments"
+
+    comment: Mapped[str] = mapped_column(String, nullable=True)
+    recipe_id = mapped_column(ForeignKey("recipes.id"), nullable=False)
+    recipe: Mapped["Recipe"] = relationship(back_populates="comments")
+    user_id = mapped_column(String, ForeignKey("user.id"), nullable=False)
+    user: Mapped["User"] = relationship(back_populates="comments")
+
+class Rating(Base):
+    __tablename__ = "ratings"
+
+    recipe_id = mapped_column(String, ForeignKey("recipes.id"), nullable=False)
+    recipe: Mapped["Recipe"] = relationship(back_populates="rating")
+    user_id = mapped_column(String, ForeignKey("user.id"))
+    user: Mapped["User"] = relationship(back_populates="rating")
+
+class Nutritional_Info(Base):
+    __tablename__ = "nutritional_info"
+
+    calories: Mapped[float] = mapped_column(Float)
+    carbohydrates: Mapped[float] = mapped_column(Float)
+    fat: Mapped[float] = mapped_column(Float)
+    protein: Mapped[float] = mapped_column(Float)
+    fiber: Mapped[float] = mapped_column(Float)
+    sugar: Mapped[float] = mapped_column(Float)
+    sodium: Mapped[float] = mapped_column(Float)
+
+    recipe_id = mapped_column(String, ForeignKey("recipes.id"), nullable=False)
+    recipe = relationship("Recipe", back_populates="nutritional_info")
