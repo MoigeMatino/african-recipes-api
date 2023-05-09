@@ -1,11 +1,9 @@
 from typing import List
-
-from constants import Role
-from datetime import datetime
+import uuid
+from .constants import Role
 from sqlalchemy.orm import relationship, Mapped, mapped_column
-from sqlalchemy.dialects.postgresql import UUID, ARRAY
-from sqlalchemy import Column, Integer, String, ForeignKey, Float, DateTime, Text
-from db.base_class import Base, generate_fake_email
+from sqlalchemy import Integer, String, ForeignKey, Float, Text
+from .db.base_class import Base, generate_fake_email
 
 
 class User(Base):
@@ -36,7 +34,7 @@ class Recipe(Base):
     servings: Mapped[int] = mapped_column(Integer)
     image_url: Mapped[str] = mapped_column(String, nullable=False)
 
-    user_id = mapped_column(String, ForeignKey("user.id"), nullable=False)
+    user_id: Mapped[uuid.UUID] = mapped_column(String, ForeignKey("user.id"), nullable=False)
     user : Mapped["User"] = relationship("User", back_populates="recipes")
     tags: Mapped[List["Recipe_Tags"]] = relationship(back_populates="recipes")
     ingredients: Mapped[List["Recipe_Ingredients"]] = relationship(back_populates="recipes")
@@ -53,8 +51,8 @@ class Tag(Base):
 class Recipe_Tags(Base):
     __tablename__ = "recipe_tags"
 
-    recipe_id = mapped_column(String, ForeignKey("recipes.id"), primary_key=True)
-    tag_id = mapped_column(String, ForeignKey("tags.id"), primary_key=True)
+    recipe_id: Mapped[uuid.UUID]= mapped_column(String, ForeignKey("recipes.id"), primary_key=True)
+    tag_id: Mapped[uuid.UUID] = mapped_column(String, ForeignKey("tags.id"), primary_key=True)
 
     tags : Mapped["Tag"] = relationship(back_populates="recipes")
     recipes : Mapped["Recipe"] = relationship(back_populates="tags")
@@ -70,8 +68,9 @@ class Ingredients(Base):
 class Recipe_Ingredients(Base):
     __tablename__ = "recipe_ingredients"
 
-    recipe_id = mapped_column(String, ForeignKey("recipes.id"), primary_key=True)
-    ingredient_id = mapped_column(String, ForeignKey("ingredients.id"), primary_key=True)
+    recipe_id: Mapped[uuid.UUID] = mapped_column(String, ForeignKey("recipes.id"), primary_key=True)
+    ingredient_id: Mapped[uuid.UUID] = mapped_column(String, ForeignKey("ingredients.id"), primary_key=True)
+    quantity: Mapped[int] = mapped_column(Integer)
 
     ingredients: Mapped["Ingredients"] = relationship(back_populates="recipes")
     recipes: Mapped["Recipe"] = relationship(back_populates="ingredients")
@@ -80,17 +79,17 @@ class Comment(Base):
     __tablename__ = "comments"
 
     comment: Mapped[str] = mapped_column(String, nullable=True)
-    recipe_id = mapped_column(ForeignKey("recipes.id"), nullable=False)
+    recipe_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("recipes.id"), nullable=False)
     recipe: Mapped["Recipe"] = relationship(back_populates="comments")
-    user_id = mapped_column(String, ForeignKey("user.id"), nullable=False)
+    user_id: Mapped[uuid.UUID] = mapped_column(String, ForeignKey("user.id"), nullable=False)
     user: Mapped["User"] = relationship(back_populates="comments")
 
 class Rating(Base):
     __tablename__ = "ratings"
 
-    recipe_id = mapped_column(String, ForeignKey("recipes.id"), nullable=False)
+    recipe_id: Mapped[uuid.UUID] = mapped_column(String, ForeignKey("recipes.id"), nullable=False)
     recipe: Mapped["Recipe"] = relationship(back_populates="rating")
-    user_id = mapped_column(String, ForeignKey("user.id"))
+    user_id: Mapped[uuid.UUID] = mapped_column(String, ForeignKey("user.id"))
     user: Mapped["User"] = relationship(back_populates="rating")
 
 class Nutritional_Info(Base):
@@ -104,5 +103,5 @@ class Nutritional_Info(Base):
     sugar: Mapped[float] = mapped_column(Float)
     sodium: Mapped[float] = mapped_column(Float)
 
-    recipe_id = mapped_column(String, ForeignKey("recipes.id"), nullable=False)
+    recipe_id: Mapped[uuid.UUID] = mapped_column(String, ForeignKey("recipes.id"), nullable=False)
     recipe = relationship("Recipe", back_populates="nutritional_info")
