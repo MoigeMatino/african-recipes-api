@@ -1,10 +1,12 @@
 from typing import List
 import uuid
-from .constants import Role
+
+from constants import Role
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from sqlalchemy import Integer, String, ForeignKey, Float, Text
-from .db.base_class import Base, generate_fake_email
+from db.base_class import Base, generate_fake_email
+
 
 
 class User(Base):

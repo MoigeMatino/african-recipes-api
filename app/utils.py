@@ -11,7 +11,7 @@ def create_recipe(db: Session,recipe: RecipeCreateSerializer):
     return db_obj
 
 def get_recipe(db: Session, recipe_id:int):
-    recipe = db.query(Recipe).where(id==recipe_id).first()
+    recipe = db.query(Recipe).where(Recipe.id==recipe_id).first()
     return recipe
 
 def get_recipes(db: Session):
@@ -19,7 +19,7 @@ def get_recipes(db: Session):
     return recipes
 
 def delete_recipe(db: Session, recipe_id:int):
-    db_obj=db.query(Recipe).where(id==recipe_id).first()
+    db_obj=db.query(Recipe).where(Recipe.id==recipe_id).first()
     db.delete(db_obj)
     db.commit()
     return {'message':'Recipe deleted'}
