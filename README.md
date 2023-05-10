@@ -1,6 +1,6 @@
 # African Recipes API
 
-The African Recipes API is a service that allows users to save, search, retrieve and manage African recipes based on dietary restrictions, nutrient ranges, and calorie counts. The API aims to promote healthier habits and share traditional African cuisine with the world.
+The African Recipes API is a service that retrieves and manages African recipes based on dietary restrictions, nutrient ranges, and calorie counts. The API aims to promote healthier habits and share traditional African cuisine with the world.
 
 ## Endpoints
 
