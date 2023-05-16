@@ -119,6 +119,6 @@ class NutritionalInfo(Base):
 class Image(Base):
     __tablename__ = "images"
 
-    user_id_id: Mapped[uuid.UUID] = mapped_column(UUID, ForeignKey("users.id"), nullable=False)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID, ForeignKey("users.id"), nullable=False)
     url: Mapped[str] = mapped_column(String, nullable=False)
 
