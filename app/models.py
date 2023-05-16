@@ -120,7 +120,3 @@ class Image(Base):
     __tablename__ = "images"
 
     url: Mapped[str] = mapped_column(String, nullable=False)
-    created_at: Mapped[TIMESTAMP] = mapped_column(TIMESTAMP(timezone=True), nullable=False,
-                                                  server_default=text("now()"))
-    updated_at: Mapped[TIMESTAMP] = mapped_column(TIMESTAMP(timezone=True), nullable=False,
-                                                  server_default=text("now()"))
