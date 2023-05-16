@@ -17,8 +17,8 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.alter_column('recipes', 'id', type_=sa.String)
+    op.alter_column('recipes', 'id', type_=sa.UUID)
 
 
 def downgrade() -> None:
-    op.alter_column('recipes', 'id', type_=sa.types.UUID)
+    op.alter_column('recipes', 'id', type_=sa.UUID)
