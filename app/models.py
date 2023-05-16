@@ -21,6 +21,7 @@ class User(Base):
     comments: Mapped[List["Comment"]] = relationship(back_populates="user")
     rating: Mapped[List["Rating"]] = relationship(back_populates="user")
 
+    photo_id = Column(UUID, ForeignKey("images.id"))
     photo = relationship("Image", back_populates="images")
 
 
@@ -118,4 +119,6 @@ class NutritionalInfo(Base):
 class Image(Base):
     __tablename__ = "images"
 
+    user_id_id: Mapped[uuid.UUID] = mapped_column(UUID, ForeignKey("users.id"), nullable=False)
     url: Mapped[str] = mapped_column(String, nullable=False)
+
