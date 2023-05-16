@@ -19,12 +19,10 @@ def upgrade() -> None:
     # Create images table
     op.create_table('images',
                     sa.Column('url', sa.String(), nullable=False),
-                    sa.Column('created_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'),
-                              nullable=False),
-                    sa.Column('updated_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'),
-                              nullable=False),
                     sa.Column('id', sa.UUID(), nullable=False),
-                    sa.PrimaryKeyConstraint('id')
+                    sa.PrimaryKeyConstraint('id'),
+                    sa.Column('created_at', sa.DateTime(), nullable=False, server_default=sa.text('now()')),
+                    sa.Column('updated_at', sa.DateTime(), nullable=True, server_default=sa.text('now()')),
                     )
 
     # Add user Profile Photo
