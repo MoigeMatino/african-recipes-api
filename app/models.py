@@ -21,7 +21,6 @@ class User(Base):
     comments: Mapped[List["Comment"]] = relationship(back_populates="user")
     rating: Mapped[List["Rating"]] = relationship(back_populates="user")
 
-    photo_id = Column(UUID, ForeignKey("images.id"))
     photo = relationship("Image", back_populates="images")
 
 
