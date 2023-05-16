@@ -23,6 +23,7 @@ class User(Base):
 
     photo = relationship("Image", back_populates="images")
 
+
 class Recipe(Base):
     __tablename__ = "recipes"
 
@@ -119,4 +120,3 @@ class Image(Base):
 
     user_id: Mapped[uuid.UUID] = mapped_column(UUID, ForeignKey("users.id"), nullable=False)
     url: Mapped[str] = mapped_column(String, nullable=False)
-
