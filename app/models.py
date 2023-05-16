@@ -23,7 +23,6 @@ class User(Base):
 
     photo = relationship("Image", back_populates="images")
 
-
 class Recipe(Base):
     __tablename__ = "recipes"
 
