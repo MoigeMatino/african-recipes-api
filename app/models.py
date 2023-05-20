@@ -1,9 +1,9 @@
 from typing import List
 import uuid
-from constants import Role
+from app.constants import Role
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from sqlalchemy import Integer, String, ForeignKey, Float, Text, TIMESTAMP, text, Column, UUID
-from db.base_class import Base, generate_fake_email
+from app.db.base_class import Base, generate_fake_email
 
 
 
