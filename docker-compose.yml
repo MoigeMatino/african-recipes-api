@@ -4,7 +4,7 @@ services:
         build: .
         container_name: 'recipes-api'
         volumes:
-            - .:/api
+            - .:/api/app
         ports:
             - 4002:4002
         env_file: # https://stackoverflow.com/questions/58047984/why-do-i-need-to-declare-env-file-explicitely-in-docker-compose-yml
