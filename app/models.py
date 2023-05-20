@@ -14,14 +14,12 @@ class User(Base):
     username: Mapped[str] = mapped_column(String, unique=True)
     email = mapped_column(String, unique=True, index=True, default=generate_fake_email, nullable=True)
     password_hash = mapped_column(String, nullable=False)
-    role = mapped_column(String, nullable=False, default=Role.USER.value,
-                         server_default=Role.USER.value
-                         )
+    role = mapped_column(String, nullable=False, default=Role.USER.value,server_default=Role.USER.value)
     recipes: Mapped[List["Recipe"]] = relationship(back_populates="user")
     comments: Mapped[List["Comment"]] = relationship(back_populates="user")
     rating: Mapped[List["Rating"]] = relationship(back_populates="user")
 
-    photo = relationship("Image", back_populates="images")
+    image = relationship("Image", back_populates="user")
 
 
 class Recipe(Base):
@@ -118,5 +116,7 @@ class NutritionalInfo(Base):
 class Image(Base):
     __tablename__ = "images"
 
-    user_id: Mapped[uuid.UUID] = mapped_column(UUID, ForeignKey("users.id"), nullable=False)
     url: Mapped[str] = mapped_column(String, nullable=False)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID, ForeignKey("users.id"), nullable=False)
+    user = relationship(back_populates="images")
+    
