@@ -117,6 +117,6 @@ class Image(Base):
     __tablename__ = "images"
 
     url: Mapped[str] = mapped_column(String, nullable=False)
-    user_id: Mapped[uuid.UUID] = mapped_column(UUID, ForeignKey("users.id"), nullable=False)
+    user_id: Mapped[uuid.UUID] = mapped_column(String, ForeignKey("users.id"), nullable=False)
     user = relationship(back_populates="images")
     
