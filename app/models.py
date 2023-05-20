@@ -6,6 +6,7 @@ from sqlalchemy import Integer, String, ForeignKey, Float, Text, TIMESTAMP, text
 from db.base_class import Base, generate_fake_email
 
 
+
 class User(Base):
     __tablename__ = "user"
 
