@@ -4,7 +4,7 @@ from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 
 from app.db.db import get_db
-from app.serializers.recipe import RecipeCreateSerializer, RecipeSerializer
+from app.serializers.recipe import CreateRecipeSerializer, RecipeSerializer
 from app.utils import create_recipe, get_recipe, get_recipes, remove_recipe
 
 app = FastAPI()
@@ -12,7 +12,7 @@ app = FastAPI()
 
 @app.post("/recipes", response_model=RecipeSerializer)
 def create_recipes(
-    recipe: RecipeCreateSerializer,
+    recipe: CreateRecipeSerializer,
     db: Session = Depends(get_db),
 ) -> Any:
     db_obj = create_recipe(db, recipe)

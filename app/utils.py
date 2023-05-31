@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
 
 from app.models import Recipe
-from app.serializers.schemas import RecipeCreateSerializer
+from app.serializers.recipe import CreateRecipeSerializer
 
 
-def create_recipe(db: Session, recipe: RecipeCreateSerializer):
+def create_recipe(db: Session, recipe: CreateRecipeSerializer):
     db_obj = Recipe(**recipe.dict())
     db.add(db_obj)
     db.commit()
