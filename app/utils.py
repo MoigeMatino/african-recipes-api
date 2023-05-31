@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.models import Recipe
-from app.schemas import RecipeCreateSerializer
+from app.serializers.schemas import RecipeCreateSerializer
 
 
 def create_recipe(db: Session, recipe: RecipeCreateSerializer):
