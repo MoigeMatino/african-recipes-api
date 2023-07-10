@@ -33,6 +33,9 @@ To install and run the African Recipes API on your local machine, follow these s
 5. Don't forget to migrate tables by running `alembic upgrade head
    ` at the root of the directory
 
+## Access
+To access the api online [visit this link](http://54.209.15.213/docs)
+
 ## Performance Considerations
 
 To ensure optimal performance of the African Recipes API, we:
