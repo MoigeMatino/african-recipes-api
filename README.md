@@ -1,59 +1,66 @@
-# African Recipes API
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-The African Recipes API is a service that retrieves and manages African recipes based on dietary restrictions, nutrient ranges, and calorie counts. The API aims to promote healthier habits and share traditional African cuisine with the world.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## Endpoints
+## About Laravel
 
-The following endpoints are currently available:
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- **`POST /recipes`**: Creates a new recipe with the given parameters.
-- **`GET /recipes`**: Retrieves a list of all recipes in the database.
-- **`GET /recipes/{recipe_id}`**: Retrieves a specific recipe by its ID.
-- **`DELETE /recipes/{recipe_id}`**: Deletes a specific recipe by its ID.
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-## Technologies Used
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-The African Recipes API is built using the following technologies:
+## Learning Laravel
 
-- **FastAPI**: a modern web framework for building APIs with Python.
-- **Docker**: a platform for building, shipping, and running applications in containers.
-- **PostgreSQL**: a powerful, open-source relational database management system.
-- **Redis**: an in-memory data structure store used as a cache for the API.
-- **Alembic**: a lightweight database migration tool for SQLAlchemy.
-- **SQLAlchemy**: a Python SQL toolkit and ORM.
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-## Installation
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-To install and run the African Recipes API on your local machine, follow these steps:
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-1. Clone the repository: `git clone https://github.com/MoigeMatino/recipes-api.git`.
-2. Install Docker and Docker Compose if you haven't already.
-3. From the project root directory, run: `docker-compose up`.
-4. The API will be available at `http://0.0.0.0:4002/docs`.
-5. Don't forget to migrate tables by running `alembic upgrade head
-   ` at the root of the directory
+## Laravel Sponsors
 
-## Access
-To access the api online [visit this link](http://54.209.15.213/docs)
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-## Performance Considerations
+### Premium Partners
 
-To ensure optimal performance of the African Recipes API, we:
-
-- Use Redis caching to improve response times for frequently accessed data.
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[WebReinvent](https://webreinvent.com/)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Jump24](https://jump24.co.uk)**
+- **[Redberry](https://redberry.international/laravel/)**
+- **[Active Logic](https://activelogic.com)**
+- **[byte5](https://byte5.de)**
+- **[OP.GG](https://op.gg)**
 
 ## Contributing
 
-We welcome contributions to the African Recipes API! To get started, fork the repository and submit a pull request with your changes.
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Future Plans
+## Code of Conduct
 
-In the future, we plan to:
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-- Complete the recipe model with more parameters for filtering.
-- Optimize database queries and indexes to reduce query times.
-- Use load testing tools to identify and fix performance bottlenecks.
-- Consider using Firebase for the database to improve scalability and reliability.
-- Consider using Kubernetes for container orchestration and management.
+## Security Vulnerabilities
 
-These improvements will make the African Recipes API more robust and scalable, allowing it to handle increased traffic and provide better reliability for users.
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+
+## License
+
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
