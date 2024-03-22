@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('total_time');
             $table->integer('servings');
             $table->string('image_url');
+            $table->json('ingredients');
             $table->json('nutritional_info');
             $table->timestamps();
             $table->foreignId('user_id');
