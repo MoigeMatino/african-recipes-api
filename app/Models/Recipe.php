@@ -21,6 +21,7 @@ class Recipe extends Model
         'image_url',
         'ingredients',
         'nutritional_info',
+        'premium',
         'created_at',
         'updated_at',
     ];

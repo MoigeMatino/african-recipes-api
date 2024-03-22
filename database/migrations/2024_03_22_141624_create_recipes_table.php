@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('servings');
             $table->string('image_url');
             $table->json('ingredients');
+            $table->boolean('premium')->default(false);
             $table->json('nutritional_info');
             $table->timestamps();
             $table->foreignId('user_id');
