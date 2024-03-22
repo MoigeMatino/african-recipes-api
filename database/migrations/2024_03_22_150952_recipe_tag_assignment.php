@@ -11,20 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('newsletters', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('content')->nullable();
-            $table->string('status')->default('draft');
-            $table->timestamps();
+        Schema::create("recipe_tag", function (Blueprint $table) {
+            $table->unsignedBigInteger("recipe_id");
+            $table->unsignedBigInteger("tag_id");
+
+            $table->foreign("recipe_id")->references("id")->on("recipes");
+            $table->foreign("tag_id")->references("id")->on("tags");
         });
+
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('newsletters');
+        Schema::dropIfExists("recipe_tag");
     }
 };
