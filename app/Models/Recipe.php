@@ -19,6 +19,9 @@ class Recipe extends Model
         'total_time',
         'servings',
         'image_url',
+        'ingredients',
+        'nutritional_info',
+        'premium',
         'created_at',
         'updated_at',
     ];
