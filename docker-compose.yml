@@ -1,0 +1,147 @@
+services:
+    laravel.test:
+        build:
+            context: ./docker/8.3
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.3/app
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '${APP_PORT:-80}:80'
+            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - mysql
+    mysql:
+        image: 'mysql/mysql-server:8.0'
+        ports:
+            - '${MYSQL_DB_PORT:-3306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${MYSQL_DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: '${MYSQL_DB_DATABASE}'
+            MYSQL_USER: '${MYSQL_DB_USERNAME}'
+            MYSQL_PASSWORD: '${MYSQL_DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - 'sail-mysql:/var/lib/mysql'
+            - './docker/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p${MYSQL_DB_PASSWORD}'
+            retries: 3
+            timeout: 5s
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        platform: linux/amd64
+        links:
+            - mysql
+        environment:
+            PMA_HOST: mysql
+            PMA_PORT: ${MYSQL_DB_PORT:-3306}
+            PMA_ARBITRARY: 1
+            restart: always
+        ports:
+            - '${PHPMYADMIN_PORT-8080}:80'
+        networks:
+            - sail
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        depends_on:
+            - mysql
+        restart: always
+    pgsql:
+        image: 'postgres:15'
+        ports:
+            - '${PGSQL_DB_PORT:-5432}:5432'
+        environment:
+            PGPASSWORD: '${PGSQL_DB_PASSWORD:-secret}'
+            POSTGRES_DB: '${PGSQL_DB_DATABASE}'
+            POSTGRES_USER: '${PGSQL_DB_USERNAME}'
+            POSTGRES_PASSWORD: '${PGSQL_DB_PASSWORD:-secret}'
+        volumes:
+            - 'sail-pgsql:/var/lib/postgresql/data'
+            - './docker/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
+        networks:
+            - sail
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-q", "-d", "${PGSQL_DB_DATABASE}", "-U", "${PGSQL_DB_USERNAME}" ]
+            retries: 3
+            timeout: 5s
+        restart: always
+    pgadmin:
+        image: dpage/pgadmin4
+        restart: always
+        environment: # Use <host.docker.internal> as the host name when creating the server in pgadmin
+            PGADMIN_DEFAULT_EMAIL: '${PG_ADMIN_EMAIL:-admin@admin.com}'
+            PGADMIN_DEFAULT_PASSWORD: '${PG_ADMIN_PASSWORD:-root}'
+        ports:
+            - "5050:80"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        depends_on:
+            - pgsql
+        networks:
+            - sail
+        volumes:
+            - 'sail-pgadmin:/var/lib/pgadmin'
+    redis:
+        image: 'redis:alpine'
+        restart: always
+        ports:
+            - '${REDIS_PORT:-6379}:6379'
+        volumes:
+            - 'sail-redis:/data'
+        networks:
+            - sail
+        healthcheck:
+            test: [ "CMD", "redis-cli", "ping" ]
+            retries: 3
+            timeout: 5s
+    memcached:
+        restart: always
+        image: 'memcached:alpine'
+        ports:
+            - '${MEMCACHED_PORT:-11211}:11211'
+        networks:
+            - sail
+    mailhog:
+        restart: always
+        image: 'mailhog/mailhog:latest'
+        platform: 'linux/amd64'
+        ports:
+            - '${MAILHOG_PORT:-1025}:1025'
+            - '${MAILHOG_DASHBOARD_PORT:-8025}:8025'
+        networks:
+            - sail
+networks:
+    sail:
+        driver: bridge
+volumes:
+    sail-mysql:
+        driver: local
+    sail-pgadmin:
+        driver: local
+    sail-pgsql:
+        driver: local
+    sail-redis:
+        driver: local
