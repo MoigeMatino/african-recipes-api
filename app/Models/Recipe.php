@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Recipe extends Model
 {
@@ -26,11 +28,33 @@ class Recipe extends Model
         'updated_at',
     ];
 
-    public function users{
-        returns $this->belongsTo(User::class, 'user_id')
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function collaborators{
-        // return $this->hasMany
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'recipe_tag', 'recipe_id', 'tag_id');
+    }
+
+    public function likes(): int
+    {
+        return $this->belongsToMany(User::class, 'likes', 'recipe_id', 'user_id')->count('id');
+    }
+
+    public function users_liked(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'likes', 'recipe_id', 'user_id');
+    }
+
+    public function rating(): int
+    {
+        return $this->belongsToMany(User::class, 'ratings', 'recipe_id', 'user_id')->average('rating');
+    }
+
+    public function user_ratings(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'ratings', 'recipe_id', 'user_id');
     }
 }
