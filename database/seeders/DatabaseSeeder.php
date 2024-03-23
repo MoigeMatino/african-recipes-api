@@ -13,11 +13,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // https://fakerphp.github.io/
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Seed Users
+        $users = [
+            "Lewis Munyi" => 'lewis@email.com',
+            "Agatha Bahati" => 'agatha@email.com'
+        ];
+
+        foreach ($users as $key => $value) {
+            User::create([
+                'name' => $key,
+                'email' => $value,
+                'password' => bcrypt('secret')
+            ]);
+        }
+
+        $this->call([UserSeeder::class]);
     }
 }
