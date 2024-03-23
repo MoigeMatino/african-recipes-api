@@ -44,4 +44,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function recipes{
+        return $this->hasMany(Recipe::class, 'recipe_id');
+    }
+
+    // public function comments{
+    //     return $this
+    // }
 }

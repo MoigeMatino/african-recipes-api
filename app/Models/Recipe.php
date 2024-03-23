@@ -25,4 +25,12 @@ class Recipe extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function users{
+        returns $this->belongsTo(User::class, 'user_id')
+    }
+
+    public function collaborators{
+        // return $this->hasMany
+    }
 }
