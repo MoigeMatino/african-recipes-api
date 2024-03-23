@@ -15,19 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         // https://fakerphp.github.io/
 
-        // Seed Users
-        $users = [
-            "Lewis Munyi" => 'lewis@email.com',
-            "Agatha Bahati" => 'agatha@email.com'
-        ];
-
-        foreach ($users as $key => $value) {
-            User::create([
-                'name' => $key,
-                'email' => $value,
-                'password' => bcrypt('secret')
-            ]);
-        }
+        
 
         $this->call([UserSeeder::class]);
     }

@@ -13,6 +13,20 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Seed Users
+        $users = [
+            "Lewis Munyi" => 'lewis@email.com',
+            "Agatha Bahati" => 'agatha@email.com'
+        ];
+
+        foreach ($users as $key => $value) {
+            User::create([
+                'name' => $key,
+                'email' => $value,
+                'password' => bcrypt('secret')
+            ]);
+        }
+
         for ($i = 0; $i < 10; $i++) {
             User::create([
                 "name" => fake()->name,
