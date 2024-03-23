@@ -57,4 +57,9 @@ class Recipe extends Model
     {
         return $this->belongsToMany(User::class, 'ratings', 'recipe_id', 'user_id');
     }
+
+    public function collaborators(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'collaborators', 'user_id', 'recipe_id');
+    }
 }
