@@ -69,9 +69,4 @@ class Recipe extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
-
-    public function collaborators(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'collaborators', 'user_id', 'recipe_id');
-    }
 }
