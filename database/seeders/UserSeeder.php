@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
 
         foreach ($users as $key => $value) {
             User::updateOrCreate([
-                'email' => $value                
+                'email' => $value
             ], [
                 'name' => $key,
                 'email' => $value,
@@ -30,15 +30,17 @@ class UserSeeder extends Seeder
         }
 
         for ($i = 0; $i < 10; $i++) {
-            User::updateOrCreate([
-                "email" => fake()->email,
-                
-            ],
-            [
-                'name' => fake()->name,
-                'email' => fake()->safeemail,
-                'password' => bcrypt('secret')
-            ]);
+            User::updateOrCreate(
+                [
+                    "email" => fake()->email,
+
+                ],
+                [
+                    'name' => fake()->name,
+                    'email' => fake()->safeemail,
+                    'password' => bcrypt('secret')
+                ]
+            );
         }
     }
 }
