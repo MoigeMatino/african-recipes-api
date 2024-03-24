@@ -26,8 +26,6 @@ class Recipe extends Model
         'ingredients',
         'nutritional_info',
         'premium',
-        'created_at',
-        'updated_at',
     ];
 
     public function creator(): BelongsTo

@@ -14,10 +14,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     { // https://fakerphp.github.io/
         $this->call([
-            UserSeeder::class, 
+            UserSeeder::class,
             SubscriberSeeder::class,
             NewsletterSeeder::class,
+            RecipeSeeder::class,
         ]);
     }
 }
- 
