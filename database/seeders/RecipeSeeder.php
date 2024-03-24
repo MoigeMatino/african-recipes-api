@@ -28,9 +28,19 @@ class RecipeSeeder extends Seeder
                 'servings' => fake()->randomDigit,
                 'image_url' => fake()->imageUrl(640, 480, 'animals', true),
                 'premium' => fake()->randomElement([true, false]),
-                'ingredients' => json_encode(["1" => "INGREDIENT 1", "2" => "INGREDIENT 2"]),
-                'nutritional_info' => json_encode(["1" => "Info 1", "2" => "Info 2"])
-            ]);
+                'ingredients' => json_encode(array_fill(0, 3, [
+                    'name' => fake()->sentence,
+                    'amount' => fake()->randomNumber(2, false),
+                    'unit' => fake()->randomElement(['g', 'kg', 'ml', 'l', 'cup', 'piece']),
+                ])),
+                'nutritional_info' => json_encode([
+                    'calories' => fake()->randomFloat(2, 0, 1000),
+                   'saturated_fat' => fake()->randomFloat(2, 0, 1000)
+                   'carbohydrates' => fake()->randomFloat(2,1,1000),
+                   'protein' => fake()->randomFloat(2,1,1000)
+                
+                ]),
+        ]);
         };
     }
 }
