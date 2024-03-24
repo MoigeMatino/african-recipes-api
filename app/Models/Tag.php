@@ -14,6 +14,6 @@ class Tag extends Model
 
     public function recipes(): BelongsToMany
     {
-        return $this->belongsToMany(Recipe::class, 'recipe_tag', 'tag_id', 'recipe_id');
+        return $this->belongsToMany(Recipe::class, 'recipe_tag', 'tag_id', 'recipe_id')->withTimestamps();
     }
 }
