@@ -14,11 +14,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     { // https://fakerphp.github.io/
         $this->call([
-            // UserSeeder::class,
-            // SubscriberSeeder::class,
-            // NewsletterSeeder::class,
-            // RecipeSeeder::class,
-            TagSeeder::class
+            UserSeeder::class,
+            SubscriberSeeder::class,
+            NewsletterSeeder::class,
+            RecipeSeeder::class,
+            TagSeeder::class,
+            RecipeTagAssignmentSeeder::class,
         ]);
     }
 }
