@@ -13,12 +13,10 @@ class TagSeeder extends Seeder
      */
     public function run(): void
     {
-        for($i=0; $i<10; $i++){
+        for ($i = 0; $i < 10; $i++) {
             Tag::create([
-                'tag' => fake()->name,
+                'tag' => fake()->word,
             ]);
         }
-
-        
     }
 }

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Recipe extends Model
 {
@@ -40,7 +39,7 @@ class Recipe extends Model
 
     public function likes(): int
     {
-        return $this->belongsToMany(User::class, 'likes', 'recipe_id', 'user_id')->count('id')->withTimestamps();
+        return $this->users_liked()->count();
     }
 
     public function users_liked(): BelongsToMany
@@ -48,14 +47,14 @@ class Recipe extends Model
         return $this->belongsToMany(User::class, 'likes', 'recipe_id', 'user_id')->withTimestamps();
     }
 
-    public function rating(): int //Todo: Confirm this actually works
+    public function rating(): float
     {
-        return $this->belongsToMany(User::class, 'ratings', 'recipe_id', 'user_id')->withTimestamps()->withPivot('rating')->get()->avg('pivot.rating');
+        return round($this->user_ratings()->get()->avg('pivot.rating'), 1);
     }
 
     public function user_ratings(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'ratings', 'recipe_id', 'user_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'ratings', 'recipe_id', 'user_id')->withTimestamps()->withPivot('rating');
     }
 
     public function collaborators(): BelongsToMany

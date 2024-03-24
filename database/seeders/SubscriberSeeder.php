@@ -13,15 +13,17 @@ class SubscriberSeeder extends Seeder
      */
     public function run(): void
     {
-        for($i = 0; $i < 1000; $i++){
-            Subscriber::updateOrCreate([
-                'email' => fake()->safeemail,                
-            ],
-            [
-                'name' => fake()->name,
-                'email' => fake()->email
-            ]
-        );
+        for ($i = 0; $i < 1000; $i++) {
+            $email = fake()->safeemail;
+            Subscriber::updateOrCreate(
+                [
+                    'email' => $email,
+                ],
+                [
+                    'name' => fake()->name,
+                    'email' => $email
+                ]
+            );
         }
     }
 }
