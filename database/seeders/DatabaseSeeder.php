@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
     { // https://fakerphp.github.io/
         $this->call([
             UserSeeder::class, 
-            SubscriberSeeder::class
+            SubscriberSeeder::class,
+            NewsletterSeeder::class,
         ]);
     }
 }

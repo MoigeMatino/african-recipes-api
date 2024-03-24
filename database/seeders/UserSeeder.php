@@ -14,20 +14,20 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Seed Users
-        // $users = [
-        //     "Lewis Munyi" => 'lewis@email.com',
-        //     "Agatha Bahati" => 'agatha@email.com'
-        // ];
+        $users = [
+            "Lewis Munyi" => 'lewis@email.com',
+            "Agatha Bahati" => 'agatha@email.com'
+        ];
 
-        // foreach ($users as $key => $value) {
-        //     User::updateOrCreate([
-        //         'email' => $value                
-        //     ], [
-        //         'name' => $key,
-        //         'email' => $value,
-        //         'password' => bcrypt('secret')
-        //     ]);
-        // }
+        foreach ($users as $key => $value) {
+            User::updateOrCreate([
+                'email' => $value                
+            ], [
+                'name' => $key,
+                'email' => $value,
+                'password' => bcrypt('secret')
+            ]);
+        }
 
         for ($i = 0; $i < 10; $i++) {
             User::updateOrCreate([
