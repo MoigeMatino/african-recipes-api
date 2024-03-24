@@ -35,10 +35,10 @@ class RecipeSeeder extends Seeder
                 ])),
                 'nutritional_info' => json_encode([
                     'calories' => fake()->randomFloat(2, 0, 1000),
-                   'saturated_fat' => fake()->randomFloat(2, 0, 1000)
-                   'carbohydrates' => fake()->randomFloat(2,1,1000),
-                   'protein' => fake()->randomFloat(2,1,1000)
-                
+                    'saturated_fat' => fake()->randomFloat(2, 0, 1000)
+                    'carbohydrates' => fake()->randomFloat(2,1,1000),
+                    'protein' => fake()->randomFloat(2,1,1000)
+                    
                 ]),
         ]);
         };
