@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Recipe;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RecipeSeeder extends Seeder
@@ -14,11 +13,8 @@ class RecipeSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::all()->pluck("id")->toArray();
-
-        foreach ($users as $user_id) {
-            Recipe::create([
-                'user_id' => $user_id,
+        foreach (User::all() as $user) {
+            $user->recipes()->create([
                 'title' => fake()->sentence,
                 'description' => fake()->paragraph,
                 'instructions' => fake()->randomHtml,
@@ -37,11 +33,10 @@ class RecipeSeeder extends Seeder
                     'calories' => fake()->randomFloat(2, 0, 1000),
                     'saturated_fat' => fake()->randomFloat(2, 0, 1000),
                     'carbohydrates' => fake()->randomFloat(2, 1, 1000),
-                    'protein' => fake()->randomFloat(2, 1, 1000)
-
+                    'protein' => fake()->randomFloat(2, 1, 1000),
                 ]),
             ]);
-        };
+        }
 
         // Add Collaborators to recipes
         $recipes = Recipe::all(); // Get all users. This will prevent Eloquent from having to re-run queries subsequently
@@ -52,7 +47,7 @@ class RecipeSeeder extends Seeder
             foreach ($users as $user) {
                 $recipe->collaborators()->attach($user); // Populate the pivot table
             }
-        };
+        }
 
         // Add likes to Recipes
         $recipes = Recipe::all();
@@ -62,13 +57,48 @@ class RecipeSeeder extends Seeder
             foreach ($users->take(fake()->numberBetween(1, floor($user->count() * 0.6))) as $user) { // At least 60% of our users will have liked a recipe
                 $user->liked_recipes()->attach($recipe);
             }
-        };
+        }
 
-
-        // Add ratings for different recipes
         /*
-         * Todo: Add ratings to pivot table such that onlu users who've liked a recipe should rate it 3 stars and above
+         * Add ratings to pivot table such that only users who've liked a recipe should rate it 3 stars and above
          * and other recipies can get rated between 1 and 2. Note that not all recipes should have ratings
          */
+
+        // $recipes = Recipe::with('users_liked')->get(); // Recipes with like column
+        // $liked_recipes = []; // [0.1.2.3.4.5.6.7.8.9]
+        // foreach ($recipes as $recipe) {
+        //     if ($recipe->users_liked->count() > 0) {
+        //         array_push($liked_recipes, $recipe);
+        //     }
+        // }
+        // dump(count($liked_recipes));
+
+        // $sample_count = floor(count($liked_recipes) / 2); // 5
+        // dump($sample_count);
+        // $randomItems = array_rand($liked_recipes, $sample_count); // [3,6,2,0,8]
+        // dump($randomItems);
+        // foreach ($randomItems as $key) {
+        //     $recipe = $liked_recipes[$key];
+
+        //     $recipe->user_ratings()->attach($recipe->creator, ['rating' => rand(3, 5)]);
+        // }
+
+        foreach (Recipe::has('users_liked')->with('users_liked')->get() as $recipe) { // Only users who've liked should be able to add a rating >= 3
+            $users_liked = $recipe->users_liked;
+
+            $sample_count = $users_liked->count() * 0.9;
+
+            $final_collection = $users_liked->random(ceil($sample_count));
+
+            foreach ($final_collection as $user) {
+                $user->rated_recipes()->attach($recipe, ['rating' => fake()->numberBetween(3, 5)]);
+            }
+        }
+
+        foreach (Recipe::doesntHave('users_liked')->get() as $recipe) { // Dislikers of Recipes musn't have liked the recipe before
+            foreach (User::inRandomOrder()->take(10)->get() as $user) {
+                $user->rated_recipes()->attach($recipe, ['rating' => fake()->numberBetween(1, 2)]);
+            }
+        }
     }
 }
