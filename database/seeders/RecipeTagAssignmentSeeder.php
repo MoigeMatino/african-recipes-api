@@ -19,7 +19,7 @@ class RecipeTagAssignmentSeeder extends Seeder
 
         foreach ($recipes as $recipe) {
             foreach ($tags as $tag) {
-                $recipe->tags()->attach($tag->id);
+                $recipe->tags()->attach($tag);
             }
         }
     }
