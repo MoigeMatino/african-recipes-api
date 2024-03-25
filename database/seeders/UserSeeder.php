@@ -33,7 +33,6 @@ class UserSeeder extends Seeder
             User::updateOrCreate(
                 [
                     "email" => fake()->email,
-
                 ],
                 [
                     'name' => fake()->name,
