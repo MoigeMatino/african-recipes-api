@@ -42,7 +42,7 @@ class RecipeSeeder extends Seeder
         $recipes = Recipe::all(); // Get all users. This will prevent Eloquent from having to re-run queries subsequently
 
         foreach ($recipes->random(floor($recipes->count() * 0.5)) as $recipe) { // Half the recipies in our collection will have collaborators
-            $users = User::whereNot('id', $recipe->creator->id)->inRandomOrder()->take(fake()->numberBetween(1, 3))->get(); // Get 1-3 users that are not the recipe's creator
+            $users = User::whereNot('id', $recipe->author->id)->inRandomOrder()->take(fake()->numberBetween(1, 3))->get(); // Get 1-3 users that are not the recipe's author
 
             foreach ($users as $user) {
                 $recipe->collaborators()->attach($user); // Populate the pivot table
@@ -53,7 +53,7 @@ class RecipeSeeder extends Seeder
         $recipes = Recipe::all();
 
         foreach ($recipes->random(floor($recipes->count() * 0.9)) as $recipe) { // At least 90% of our recipies will have > 1 like
-            $users = User::whereNot('id', $recipe->creator->id)->inRandomOrder()->get();
+            $users = User::whereNot('id', $recipe->author->id)->inRandomOrder()->get();
             foreach ($users->take(fake()->numberBetween(1, floor($user->count() * 0.6))) as $user) { // At least 60% of our users will have liked a recipe
                 $user->liked_recipes()->attach($recipe);
             }
@@ -80,7 +80,7 @@ class RecipeSeeder extends Seeder
         // foreach ($randomItems as $key) {
         //     $recipe = $liked_recipes[$key];
 
-        //     $recipe->user_ratings()->attach($recipe->creator, ['rating' => rand(3, 5)]);
+        //     $recipe->user_ratings()->attach($recipe->author, ['rating' => rand(3, 5)]);
         // }
 
         foreach (Recipe::has('users_liked')->with('users_liked')->get() as $recipe) { // Only users who've liked should be able to add a rating >= 3

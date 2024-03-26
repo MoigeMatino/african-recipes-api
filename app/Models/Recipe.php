@@ -26,14 +26,9 @@ class Recipe extends Model
         'premium',
     ];
 
-    public function creator(): BelongsTo
+    public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function tags(): BelongsToMany
-    {
-        return $this->belongsToMany(Tag::class, 'recipe_tag', 'recipe_id', 'tag_id')->withTimestamps();
     }
 
     public function likes(): int
@@ -65,4 +60,11 @@ class Recipe extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    public function tags(): MorphMany
+    {
+        return $this->MorphMany(Tag::class, 'taggable');
+    }
+
+
 }

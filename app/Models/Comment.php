@@ -16,7 +16,7 @@ class Comment extends Model
         
     ];
 
-    public function comment_author(): BelongsTo
+    public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
@@ -29,6 +29,11 @@ class Comment extends Model
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function tags(): MorphMany
+    {
+        return $this->morphMany(Tag::class, 'taggable');
     }
 
 

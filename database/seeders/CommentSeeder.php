@@ -19,11 +19,11 @@ class CommentSeeder extends Seeder
             for($i=0; $i<5;$i++){
                 $user = User::all()->random();
                 $comment = $recipe->comments()->make(['comment' => fake()->sentence(5) ]);
-                $comment->comment_author()->associate($user);
+                $comment->author()->associate($user);
                 $comment->save();
                 // $comment->comments()->make(['comment' => fake()->sentence()])->associate($user)->save();
                 $new_comment = $comment->comments()->make(['comment' => fake()->sentence(5)]);
-                $new_comment->comment_author()->associate($user);                
+                $new_comment->author()->associate($user);                
                 $new_comment->save();
             }
 

@@ -18,9 +18,10 @@ class DatabaseSeeder extends Seeder
             SubscriberSeeder::class,
             NewsletterSeeder::class,
             RecipeSeeder::class,
-            TagSeeder::class,
-            RecipeTagAssignmentSeeder::class,
+            // !Need to discuss relevance of this class
+            // RecipeTagAssignmentSeeder::class,
             CommentSeeder::class,
+            TagSeeder::class,
         ]);
     }
 }
