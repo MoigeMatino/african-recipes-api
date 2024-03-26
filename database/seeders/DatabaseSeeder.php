@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             RecipeSeeder::class,
             TagSeeder::class,
             RecipeTagAssignmentSeeder::class,
+            CommentSeeder::class,
         ]);
     }
 }

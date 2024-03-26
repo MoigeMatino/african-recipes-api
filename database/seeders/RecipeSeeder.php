@@ -100,5 +100,8 @@ class RecipeSeeder extends Seeder
                 $user->rated_recipes()->attach($recipe, ['rating' => fake()->numberBetween(1, 2)]);
             }
         }
+
+        // Add data to the comments table
+        
     }
 }
