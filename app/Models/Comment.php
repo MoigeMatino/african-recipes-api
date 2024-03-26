@@ -13,7 +13,6 @@ class Comment extends Model
 
     protected $fillable = [
         'comment',
-        
     ];
 
     public function author(): BelongsTo
@@ -35,6 +34,4 @@ class Comment extends Model
     {
         return $this->morphMany(Tag::class, 'taggable');
     }
-
-
 }
