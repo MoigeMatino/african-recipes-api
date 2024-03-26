@@ -25,6 +25,7 @@ return new class extends Migration
             $table->boolean('premium')->default(false);
             $table->json('nutritional_info');
             $table->timestamps();
+            $table->softDeletes();
             $table->unsignedBigInteger('user_id');
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
         });
