@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->string('tag');
-            $table->unsignedBigInteger('taggable_id');
-            $table->string('taggable_type');
+            $table->text('comment');
+            $table->unsignedBigInteger('commentable_id');
+            $table->string('commentable_type');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('comments');
     }
 };

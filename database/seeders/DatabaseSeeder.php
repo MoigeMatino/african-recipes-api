@@ -12,12 +12,16 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      */
     public function run(): void
-    {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+    { // https://fakerphp.github.io/
+        $this->call([
+            UserSeeder::class,
+            SubscriberSeeder::class,
+            NewsletterSeeder::class,
+            RecipeSeeder::class,
+            // !Need to discuss relevance of this class
+            // RecipeTagAssignmentSeeder::class,
+            CommentSeeder::class,
+            TagSeeder::class,
         ]);
     }
 }

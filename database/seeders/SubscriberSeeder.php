@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Subscriber;
 
 class SubscriberSeeder extends Seeder
 {
@@ -12,6 +13,17 @@ class SubscriberSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        for ($i = 0; $i < 1000; $i++) {
+            $email = fake()->safeemail;
+            Subscriber::updateOrCreate(
+                [
+                    'email' => $email,
+                ],
+                [
+                    'name' => fake()->name,
+                    'email' => $email
+                ]
+            );
+        }
     }
 }
