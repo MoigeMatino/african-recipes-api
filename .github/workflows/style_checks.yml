@@ -1,0 +1,28 @@
+name: Code Style Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - stage
+      - test
+
+jobs:
+  code_checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, zip
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Run Laravel CodeSniffer
+        run: vendor/bin/pint --test
