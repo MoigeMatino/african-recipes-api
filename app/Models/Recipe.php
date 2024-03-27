@@ -65,6 +65,4 @@ class Recipe extends Model
     {
         return $this->MorphMany(Tag::class, 'taggable');
     }
-
-
 }

@@ -12,6 +12,6 @@ class Newsletter extends Model
     protected $fillable = [
         'title',
         'content',
-        'status'
+        'status',
     ];
 }
