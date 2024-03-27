@@ -21,7 +21,7 @@ class Rating extends Model
     //     return $this->belongsToMany(User::class, 'ratings', 'recipe_id', 'user_id')->withTimestamps();
     // }
 
-    public function recipes(): BelongsToMany # Recipes with a certain rating
+    public function recipes(): BelongsToMany // Recipes with a certain rating
     {
         return $this->belongsToMany(Recipe::class, 'ratings', 'user_id', 'recipe_id')->withTimestamps();
     }

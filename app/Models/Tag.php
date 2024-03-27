@@ -10,7 +10,7 @@ class Tag extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["tag"];
+    protected $fillable = ['tag'];
 
     public function recipes(): BelongsToMany
     {

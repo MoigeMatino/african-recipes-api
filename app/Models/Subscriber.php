@@ -11,6 +11,6 @@ class Subscriber extends Model
 
     protected $filable = [
         'name',
-        'email'
+        'email',
     ];
 }
