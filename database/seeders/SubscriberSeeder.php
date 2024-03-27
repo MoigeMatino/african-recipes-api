@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Subscriber;
+use Illuminate\Database\Seeder;
 
 class SubscriberSeeder extends Seeder
 {
@@ -21,7 +20,7 @@ class SubscriberSeeder extends Seeder
                 ],
                 [
                     'name' => fake()->name,
-                    'email' => $email
+                    'email' => $email,
                 ]
             );
         }
