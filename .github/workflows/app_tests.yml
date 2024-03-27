@@ -1,4 +1,4 @@
-name: Unit Tests and Feature Tests
+name: Unit and Feature Tests
 
 on:
   pull_request:
