@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('content')->nullable();
             $table->string('status')->default('draft');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
